@@ -6,6 +6,8 @@
 
 #include <numeric>
 #include <immintrin.h>
+#include <cstdio>
+#include <ctime>
 
 using namespace std;
 const int filter_size=7;
@@ -104,6 +106,7 @@ void forward_pass(double img[][33]) {
 	    __m256d img_tmp_a, conv_w_tmp_a, img_tmp_b, conv_w_tmp_b, product_tmp_a, product_tmp_b;
         // Convolution Operation + Sigmoid Activation
         for (int filter_dim=0; filter_dim<5; filter_dim++) {
+                clock_t start = clock();
                 for (int i=0; i<28; i++) {
                         for (int j=0; j<28; j++) {
                                 max_pooling[filter_dim][i][j] = 0;
@@ -136,6 +139,9 @@ void forward_pass(double img[][33]) {
                                 sig_layer[filter_dim][i][j] = sigmoid(conv_layer[filter_dim][i][j] + conv_b[filter_dim][i][j]);
                         }
                 }
+                cout << "time:" << clock()-start << "\n";
+                cout << "clock per sec:" << CLOCKS_PER_SEC << "\n";
+                exit(1);
         }
 
         // MAX Pooling (max_pooling, max_layer)
